@@ -6,7 +6,7 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 23:31:31 by aait-ihi          #+#    #+#             */
-/*   Updated: 2019/11/25 23:32:21 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2019/11/26 00:14:29 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void ft_unsetenv(char **cmd, t_list **env)
 			*del = (*del)->next;
 		else if(del)
 			ft_lstonedel(del);
+        i++;
     }
     if (i == 1)
     	return (ft_print_error(cmd[0], ERR_FWARGS, 0));

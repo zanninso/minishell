@@ -73,4 +73,7 @@ void ft_print_error(char *str, int er, char c);
 void	freecontent(void *content, size_t contentsize);
 void    freetab (char **tab);
 
+// env 
+
+void ft_display_env(t_list *env);
 #endif

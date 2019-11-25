@@ -3,10 +3,10 @@ NAME = minishell
 DIR_LFT = libft
 
 FLAGS = -Wall -Werror -Wextra -g
+SRC1 = $(wildcard *.c)
+SRC = $(wildcard builtin/*.c) $(SRC1)
 
-SRC = $(wildcard *.c) $(wildcard builtin/*.c)
-
-INC = -Iincludes/
+INC = -I includes/
 
 CC = gcc
 
@@ -18,7 +18,7 @@ $(NAME): $(OBJ)
 	@make -C libft/
 	@$(CC) $(FLAGS) $(INC) $(OBJ) -L$(DIR_LFT) -lft -o $(NAME)
 
-srcs/%.o: srcs/%.c
+%.o: %.c
 	@echo "$^->$@"
 	@$(CC) $(FLAGS) $(INC) -c $< -o $@
 
