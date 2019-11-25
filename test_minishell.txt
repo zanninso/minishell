@@ -1,0 +1,27 @@
+cd test :
+    cd to link;
+    cd with path like :
+            ////////var//////////
+    too many arguments
+echo test:
+    has $ in some of env variable
+    unmached qouts
+    linked qouts(ex:"jhjjdf"'"""""')
+commande test
+    arg parsing (ex:"  " ls) must say 
+    an binary in multiple paths with and without exec permission
+    binary without permission
+    random binary
+    exit
+
+
+
+
+Important:
+max cmd len in 1024 so commande more than 1024 will not work
+"  " , " " , ""  , " " : this made 4 args
+cd qvasdvasvasv => no such a file ... / not a directory
+cd
+cd -
+unsetenv PWD ; cd libft => works in bash not in minishell.
+exit
