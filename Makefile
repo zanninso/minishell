@@ -4,7 +4,7 @@ DIR_LFT = libft
 
 FLAGS = -Wall -Werror -Wextra -g
 
-SRC = $(wildcard srcs/*.c)
+SRC = $(wildcard *.c) $(wildcard builtin/*.c)
 
 INC = -Iincludes/
 
@@ -25,11 +25,11 @@ srcs/%.o: srcs/%.c
 clean:
 	@(echo "Delete .o of $(NAME) and Libft")
 	@/bin/rm -f $(OBJ)
-	@(cd $(DIR_LFT) && make clean)
+	#@(cd $(DIR_LFT) && make clean)
 
 fclean: clean
 	@(echo "Delete .o and $(NAME)")
 	@/bin/rm -f $(NAME)
-	@(cd $(DIR_LFT) && make fclean)
+	#@(cd $(DIR_LFT) && make fclean)
 
 re: fclean all
