@@ -6,7 +6,7 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 06:55:35 by aait-ihi          #+#    #+#             */
-/*   Updated: 2019/11/25 15:51:37 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2019/11/27 19:16:33 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ t_list *ft_parsecmd(char *buffer, t_list **env,t_env_var *var)
 		ft_translate(tmp, "\1\2", "$~");
 		ft_lstpushback(&args, tmp, ft_strlen(tmp) + !!tmp);
 		free(tmp);
-		
 	}
 	free(buff);
 	return (args);

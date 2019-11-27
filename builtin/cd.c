@@ -6,7 +6,7 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 23:20:37 by aait-ihi          #+#    #+#             */
-/*   Updated: 2019/11/25 23:21:02 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2019/11/27 18:38:32 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,14 @@ void ft_get_cwd(char *ret, char *path)
 	!*ret ? ft_strcat(ret, "/") : 0;
 }
 
-void ft_update_pwd(char *pwd, t_env_var *var)
+void ft_update_pwd(char *path, t_list **env)
 {
+	t_list **pwd;
+	t_list **oldpwd;
+
+	pwd = ft_lstfind(env, "PWD", 4);
+	oldpwd = ft_lstfind(env, "OLDPWD", 7);
+
 	ft_lstmodifone(var->oldpwd, ft_strjoin("OLDPWD=", var->pwd->content + 4));
 	ft_lstmodifone(var->pwd, ft_strjoin("PWD=", pwd));
 	ft_strreplace(var->oldpwd->content, '=', 0);
@@ -48,31 +54,49 @@ void ft_update_pwd(char *pwd, t_env_var *var)
 	free(pwd);
 }
 
-void ft_cd(char **cmd, t_env_var *var)
+int change_dir(char *path, t_list **env, char *oldwd)
 {
-	char *path;
+	char *dir;
 
-	if (cmd[1] && cmd[2])
-		return (ft_print_error(cmd[0], ERR_MNARGS, 0));
-	else if (!cmd[1])
-		path = ft_strjoin(" ", var->home->content + 5);
-	else if (ft_strequ(cmd[1], "-"))
-		path = ft_strjoin(" ", var->oldpwd->content + 7);
-	else if (!ft_is_dir(cmd[1]))
-		return (ft_print_error(cmd[1], ERR_NOT_DIR, 0));
-	else if (*cmd[1] != '/')
-		path = ft_strnjoin(C_TAB{" ", var->pwd->content + 4, "/", cmd[1]}, 4);
-	else
-		path = ft_strjoin(" ", cmd[1]);
 	if (path && !access(path + 1, F_OK))
 	{
 		*path = 0;
 		ft_get_cwd(path, path + 2);
 		if (!chdir(path))
-			return (ft_update_pwd(path, var));
+		{
+			oldwd = path;
+			ft_update_pwd(path, env);
+		}
 		free(path);
-		return (ft_print_error(cmd[0], ERR_PRMDND, 0));
+		return (ft_printf("%s : %s : %s",dir, ERR_NTFOUND, 0));
 	}
-	free(path);
-	return (ft_print_error(cmd[0], ERR_NTFOUND, 0));
+	return (ft_printf("%s : %s : %s",dir, ERR_NTFOUND, 0));
+}
+
+void ft_cd(char **cmd, t_list **env, char *oldpwd, char *path)
+{
+	t_list **elm;
+
+	if (cmd[1] && cmd[2])
+		return (ft_printf("%s : %s : %s",cmd[0], ERR_NTFOUND, 0));
+	else if (!cmd[1])
+	{
+		if(!(elm = ft_lstfind(env, "HOME", 5)))
+			return (ft_printf("%s : %s : %s",cmd[0], ERR_NTFOUND, 0));
+		path = ft_strjoin(" ", (*elm)->content + 5);	
+	}
+	else if (ft_strequ(cmd[1], "-"))
+	{
+		if(!oldpwd)
+			return (ft_printf("%s : %s : %s",cmd[0], ERR_NTFOUND, 0));
+		path = ft_strjoin(" ", oldpwd);		
+	}
+	else if (*cmd[1] != '/')
+	{
+		if(!(elm = ft_lstfind(env, "PWD", 4)))
+			path = ft_strnjoin(C_TAB{" ", &(*elm)->content[4], "/", cmd[1]}, 4);
+		else
+			path = ft_strnjoin(C_TAB{" ", getcwd(NULL, 0), "/", cmd[1]}, 4);
+	}
+	return (change_dir(path));
 }

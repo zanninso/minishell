@@ -17,7 +17,6 @@ t_list **pwd;
 
 enum
 {
-
 	ERR_CMDNTFD,
 	ERR_MNARGS,
 	ERR_PRMDND,
