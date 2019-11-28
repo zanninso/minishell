@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/23 00:14:15 by aait-ihi          #+#    #+#             */
-/*   Updated: 2019/11/27 17:11:01 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2019/11/28 01:17:10 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,27 @@ void kill_procces(int signal)
 
 void init(char *environ[], t_list **env, t_env_var *var)
 {
+	t_list **ptr;
+
+	pwd = &var->pwd;
 	*env = tab_to_list(environ);
 	signal(SIGINT, kill_procces);
-	var->home = *ft_lstfind(env, "HOME", 5);
-	var->pwd = *ft_lstfind(env, "PWD", 4);
-	var->oldpwd = *ft_lstfind(env, "OLDPWD", 7);
-	var->path = *ft_lstfind(env, "PATH", 5);
-	pwd = &var->pwd;
+	if((ptr = ft_lstfind(env, "HOME", 5)))
+		var->home = *ptr;
+	else if(var->home = ft_lstnew("HOME=", 5))
+		ft_lstadd(env,var->home);
+	if((ptr = ft_lstfind(env, "PWD", 4)))
+		var->pwd = *ptr;
+	else if(var->pwd = ft_lstnew("PWD=", 4))
+		ft_lstadd(env,var->pwd);
+	if((ptr = ft_lstfind(env, "PATH", 5)))
+		var->path = *ptr;
+	else if(var->path = ft_lstnew("PATH=", 5))
+		ft_lstadd(env,var->path);
+	if((ptr = ft_lstfind(env, "OLDPWD", 7)))
+		var->oldpwd = *ptr;
+	else if(var->oldpwd = ft_lstnew("OLDPWD=", 5))
+		ft_lstadd(env,var->oldpwd);
 }
 
 void dispatch(char **cmd, t_list **env, t_env_var *var)
